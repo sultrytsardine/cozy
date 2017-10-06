@@ -1,11 +1,11 @@
 #!/bin/bash
 
 function recognize_distribution {
-    local distrib_name=`cat /etc/*-release | grep -i "description"`
+    local distrib_name=`cat /etc/*-release 2> /dev/null | grep -i "description"`
 
     if [ ${#distrib_name} -lt 3 ]; then
         echo "Could not recognize your distribution!"
-        exit 1
+        exit 64
     else
         # try to extract 'DISTRIB_DESCRIPTION="<extract_me>"'
         distrib_name=`expr match "$distrib_name" '.*="\(.*\)"'`
@@ -17,7 +17,7 @@ function recognize_distribution {
             recognized="elementary"
         else
             echo "Could not recognize your distribution!"
-            exit 1
+            exit 64
         fi
 
         echo $recognized
@@ -37,7 +37,7 @@ function is_elementary {
 
 
 # function exports
-export -f recognize_distribution
-export -f is_elementary
+# export -f recognize_distribution
+# export -f is_elementary
 
 

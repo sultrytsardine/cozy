@@ -4,23 +4,23 @@ function is_git_installed {
     local present=`git --version`
     local pattern='git version +([0-9\.])'
     if [[ $present =~ $pattern ]]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
 function is_inside_git_repo {
     if [ -d ".git" ]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
 
 function git_branch_name {
-    local current_branch=`git symbolic-ref HEAD 2> /dev/null || echo "HEAD:$(git rev-parse --short HEAD)"`
+    local current_branch=`git symbolic-ref HEAD 2> /dev/null || echo "HEAD:$(git rev-parse --short HEAD)" || echo ""`
     # remove 'refs/heads/' from result
     echo "${current_branch/refs\/heads\//}"
 }
@@ -33,9 +33,9 @@ function git_has_changed() {
         local stats=`git status --porcelain`
     fi
     if [ ${#stats} -gt 0 ]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
@@ -47,9 +47,9 @@ function git_has_untracked() {
     fi
     local stats=`git status --porcelain | grep '^?? .*$'`
     if [[ ${#stats} -gt 0 ]]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
@@ -61,9 +61,9 @@ function git_has_added() {
     fi
     local stats=`git status --porcelain | grep '^[ ]A[M] .*$'`
     if [[ ${#stats} -gt 0 ]]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
@@ -76,9 +76,9 @@ function git_has_modified() {
     fi
     local stats=`git status --porcelain | grep '^[ A]M .*$'`
     if [[ ${#stats} -gt 0 ]]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
@@ -90,16 +90,16 @@ function git_has_deleted() {
     fi
     local stats=`git status --porcelain | grep '^[ A]D .*$'`
     if [[ ${#stats} -gt 0 ]]; then
-        echo "True"
+        echo 'True'
     else
-        echo "False"
+        echo 'False'
     fi
 }
 
 function git_status {
     local stats=`git status --porcelain`
-    if [[ $(git_has_changed $stats) == "False" ]]; then
-        GIT_CURRENT_STATS=("False" "False" "False" "False")
+    if [[ $(git_has_changed $stats) == 'False' ]]; then
+        GIT_CURRENT_STATS=('False' 'False' 'False' 'False')
     else
         untracked=$(git_has_untracked $stats)
         added="$(git_has_added $stats)"
@@ -108,7 +108,19 @@ function git_status {
         GIT_CURRENT_STATS=($untracked $added $modified $deleted)
     fi
     echo ${GIT_CURRENT_STATS[@]}
-    unset $GIT_CURRENT_STATS
+    export GIT_STATUS=${GIT_CURRENT_STATS[@]}
+    unset GIT_CURRENT_STATS
+}
+
+function git_alias() {
+    # serves as internal alias, calling git
+    if [ $1 == "status" ]; then
+        git_status
+        "git" $@
+    else
+        "git" $@
+    fi
+
 }
 
 
@@ -119,8 +131,4 @@ export -f git_branch_name
 export -f git_has_changed
 export -f git_has_untracked
 export -f git_status
-#echo "Git installed: $(is_git_installed)"
-#echo "Is inside repo?: $(is_inside_git_repo)"
-#echo "Current branch: $(git_branch_name)"
-echo "Repo status (?? A M D): $(git_status)"
-
+export -f git_alias

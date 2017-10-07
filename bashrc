@@ -22,16 +22,12 @@ fi
 #
 #   Execute other files
 #
-source 'history.sh'
-source 'git.sh'       # git-related function definitions
-source 'prompt.sh'    # customizes command prompt & prompt_command
-source 'traps.sh'    # defines precmd_funcs - executed before some commands
-
-
-#
-#   Exports
-#
-export BASHER_HOME="$HOME/.basher"
+source 'exports.sh'
+source 'history.sh'     # history file settings
+source 'git.sh'         # git-related function definitions
+source 'prompt.sh'      # customizes command prompt & prompt_command
+source 'traps.sh'       # defines precmd_funcs - executed before some commands
+source 'functions.sh'   # custom aliases, too big to be just aliases
 
 
 #
@@ -40,16 +36,13 @@ export BASHER_HOME="$HOME/.basher"
 alias 'cd ...'='cd ../..'
 alias 'cd ....'='cd ../../..'
 alias 'cd .....'='cd ../../../..'
-
 alias 'ls'='ls -hg --color=auto'         # human-readable, group dirs first
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 

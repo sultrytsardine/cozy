@@ -45,3 +45,20 @@ else
     PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$ "
 fi
 unset color_prompt
+unset no_color
+unset black
+unset blue
+unset green
+unset cyan
+unset red
+unset purple
+unset brown
+unset light_gray
+unset dark_gray
+unset light_blue
+unset light_green
+unset light_cyan
+unset light_red
+unset light_purple
+unset yellow
+unset white

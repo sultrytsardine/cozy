@@ -36,7 +36,7 @@ if [ "$color_prompt" = yes ]; then
     export _user_host="$light_green\u@\h$no_color"
     export _pwd="$blue\w$no_color"
     export _git_br="\$(git_branch_name)${yellow}\$(git_branch_dirty)${no_color}"
-    PS1="$_chroot\$$_user_host:$_pwd ($_git_br)\$ "
+    PS1="$_chroot\$$_user_host:$_pwd:$_git_br\$ "
     unset _chroot
     unset _user_host
     unset _pwd

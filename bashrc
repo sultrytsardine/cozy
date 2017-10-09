@@ -33,12 +33,9 @@ source 'functions.sh'   # custom aliases, too big to be just aliases
 #
 #   Aliases
 #
-alias 'cd ...'='cd ../..'
-alias 'cd ....'='cd ../../..'
-alias 'cd .....'='cd ../../../..'
-alias 'ls'='ls -hg --color=auto'         # human-readable, group dirs first
-alias ll='ls -alF'
-alias la='ls -A'
+alias ls='ls -CF --color=auto'         # human-readable, group dirs first
+alias ll='ls -alFhs'
+alias la='ls -GA'
 alias l='ls -CF'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'

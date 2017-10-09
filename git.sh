@@ -20,9 +20,21 @@ function is_inside_git_repo {
 
 
 function git_branch_name {
-    local current_branch=`git symbolic-ref HEAD 2> /dev/null || echo "HEAD:$(git rev-parse --short HEAD)" || echo ""`
-    # remove 'refs/heads/' from result
-    echo "${current_branch/refs\/heads\//}"
+    if [[ $(is_inside_git_repo) == 'False' ]]; then
+        echo ''
+    else
+        local current_branch=`git symbolic-ref HEAD 2> /dev/null` || echo ''
+        # remove 'refs/heads/' from result
+        if [ ${#current_branch} -gt 0 ]; then
+            echo "${current_branch/refs\/heads\//}"
+        else
+            local detached_head=`git rev-parse --short HEAD` || echo ''
+            if [ ${#detached_head} -gt 0 ]; then
+                echo "HEAD $detached_head"
+            fi
+        fi
+    fi
+    echo ''
 }
 
 

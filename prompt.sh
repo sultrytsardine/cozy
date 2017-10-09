@@ -35,9 +35,8 @@ if [ "$color_prompt" = yes ]; then
     export _chroot="${debian_chroot:+($debian_chroot)}"
     export _user_host="$light_green\u@\h$no_color"
     export _pwd="$blue\w$no_color"
-    export _git_br="\$(git_branch_name)\$(git_branch_dirty)"
-    export _git_dr="\$(git_branch_dirty)"
-    PS1="$_chroot\$$_user_host:$_pwd ($_git_br$git_br)\$ "
+    export _git_br="\$(git_branch_name)${purple}\$(git_branch_dirty)${no_color}"
+    PS1="$_chroot\$$_user_host:$_pwd ($_git_br)\$ "
     unset _chroot
     unset _user_host
     unset _pwd

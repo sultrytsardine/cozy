@@ -4,6 +4,11 @@ import subprocess
 import json
 
 
+def execute(cmd):
+	with open(os.devnull, 'w') as nl:
+            _ = subprocess.Popen(cmd.split(), stdout=nl, stderr=nl)
+
+
 if __name__ == '__main__':
     try:
         with open('fresh_setup.config', 'r') as f:
@@ -12,12 +17,19 @@ if __name__ == '__main__':
         print('Error while reading config')
 
     # TODO: mandatory. optional?
-    for x in conf['mandatory']:
-        print('. %s' % x)
-        cmd = 'sudo apt install %s -q -y' % x
-        with open(os.devnull, 'w') as nl:
-            proc = subprocess.Popen(cmd.split(), stdout=nl, stderr=nl)
-    for x in conf['optional']:
-        print('? %s' % x)
-
+	exec('sudo apt install software-properties-common')
+	for ppa in conf['ppa']:
+		print('+ %s' % ppa)
+		cmd = 'sudo apt-add-repository %s' % ppa
+		execute(cmd)
+		
+    for package in conf['mandatory']:
+        print('. %s' % package)
+        cmd = 'sudo apt install %s -q -y' % package
+        execute(cmd)
+		
+    for package in conf['optional']:
+        print('? %s' % package)
+		cmd = 'sudo apt install %s -q -y' % package
+        execute(cmd)
 

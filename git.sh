@@ -53,7 +53,7 @@ function git_has_changed() {
 
 
 function git_branch_dirty {
-    if [[ $(git_has_changed) == 'True' ]]; then
+    if [[ $(is_inside_git_repo) == 'True' && $(git_has_changed) == 'True' ]]; then
         echo ' *'
     else
         echo ''

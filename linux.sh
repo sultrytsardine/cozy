@@ -27,9 +27,9 @@ function recognize_distribution {
 
 function is_elementary {
     if [ $(recognize_distribution) == "elementary" ]; then
-        echo "True"
+       echo "True"
     else
-        echo "False"
+       echo "False"
     fi
 }
 

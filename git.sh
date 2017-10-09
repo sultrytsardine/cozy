@@ -33,9 +33,9 @@ function git_branch_name {
                 echo "HEAD $detached_head"
             fi
         fi
+        echo ''
     fi
-    echo ''
-}
+    }
 
 
 function git_has_changed() {
@@ -50,6 +50,16 @@ function git_has_changed() {
         echo 'False'
     fi
 }
+
+
+function git_branch_dirty {
+    if [[ $(git_has_changed) == 'True' ]]; then
+        echo ' *'
+    else
+        echo ''
+    fi
+}
+
 
 function git_has_untracked() {
     if [ $1 ]; then
@@ -110,7 +120,7 @@ function git_has_deleted() {
 
 function git_status {
     local stats=`git status --porcelain`
-    if [[ $(git_has_changed $stats) == 'False' ]]; then
+    if [[ !$(git_has_changed $stats) ]]; then
         GIT_CURRENT_STATS=('False' 'False' 'False' 'False')
     else
         untracked=$(git_has_untracked $stats)
@@ -144,3 +154,4 @@ export -f git_has_changed
 export -f git_has_untracked
 export -f git_status
 export -f git_alias
+export -f git_branch_dirty

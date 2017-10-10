@@ -2,15 +2,16 @@
 
 if [[ -d $HOME/.basher || ${#BASHER_HOME} -gt 0 ]]; then
     echo "It looks like basher is already installed at $BASHER_HOME"
-    return
+    exit 64
 else
     echo "Installing..."
-    sudo apt update &> /dev/null || echo "apt update failed!"; return
+    sudo apt update || (echo "apt update failed!"; exit 64)
     # git gud
-    if [[ ! hash git &> /dev/null ]]; then
+    if [[ $(hash git &> /dev/null || echo 'x') == 'x' ]]; then
         echo "Installing git"
-        sudo apt install git -q -y || echo "Failed to install git!"; return
+        sudo apt install git -q -y || (echo "Failed to install git!"; exit 64)
     fi
+    sudo apt install vim -q -y
     git clone https://github.com/wtty-fool/basher "$HOME/.basher"
 
 
@@ -21,10 +22,10 @@ else
     if [ -f $HOME/.vimrc ]; then
         mv $HOME/.vimrc $HOME/.vimrc.backup
     fi
-    if [-f $HOME/.vim ]; then
+    if [ -f $HOME/.vim ]; then
         mv $HOME/.vim $HOME/.vim.backup
     fi
-    if [-f $HOME/.gitconfig]; then
+    if [ -f $HOME/.gitconfig ]; then
         mv $HOME/.gitconfig $HOME/.gitconfig.backup
     fi
 
@@ -39,19 +40,19 @@ else
     echo "Installing vim plugins..."
     vim +PluginInstall +qall
     echo "Recompiling YouCompleteMe's libraries..."
-    sudo apt install cmake build-essential -q -y || echo "Failed to install cmake!"; return
+    sudo apt install cmake build-essential -q -y || (echo "Failed to install cmake!"; exit 64)
     python $HOME/.vim/bundle/YouCompleteMe/install.py &> /dev/null
 
 
     echo "Setting up Python's virtual environments..."
-    sudo apt install python python3 python-pip python3-pip -y -q || echo "Failed to install Python!"; return
-    sudo pip3 install --user --ignore-installed virutalenv virtualenvwrapper
+    sudo apt install python python3 python-pip python3-pip -y -q || (echo "Failed to install Python!"; exit 64)
+    sudo -H pip3 install --user --ignore-installed virtualenv virtualenvwrapper
     py3_location=`which python3`
     echo "export VIRTUALENVWRAPPER_PYTHON=$py3_location" >> $HOME/.basher/exports.sh
     unset py3_location
     echo "export WORKON_HOME=$HOME/.virtualnvs" >> $HOME/.basher/exports.sh
     echo "source $HOME/.local/bin/virtualenvwrapper.sh" >> $HOME/.basher/bashrc
-    sudo mkdir --mode=0755 $HOME/.virtualenvs
+    sudo -H mkdir --mode=0755 $HOME/.virtualenvs
 
 
     until [[ $scheme -eq 1 ]] || [[ $scheme -eq 2 ]]; do

@@ -13,7 +13,7 @@ else
     fi
     sudo apt install vim -q -y
     git clone https://github.com/wtty-fool/basher "$HOME/.basher"
-    mkdir --mode=0755 $HOME/.basher
+    # mkdir --mode=0755 $HOME/.basher
     chmod 0755 $HOME/.basher
 
     echo; echo; echo "Backing up .bashrc and vim and gitconfig..."
@@ -57,7 +57,8 @@ else
     unset py3_location
     echo "export WORKON_HOME=$HOME/.virtualnvs" >> $HOME/.basher/exports.sh
     echo "source $HOME/.local/bin/virtualenvwrapper.sh" >> $HOME/.basher/bashrc
-    sudo -H mkdir --mode=0755 $HOME/.virtualenvs
+    source $HOME/.local/bin/virtualenvwrapper.sh &> /dev/null
+    mkdir --mode=0755 $HOME/.virtualenvs
 
 
     echo; echo; 
@@ -87,7 +88,7 @@ else
     unset scheme
 
 
-    echo; echo; echo;  # blue
+    echo; echo; echo;
     echo "------------------------"
     echo "-                      -"
     echo "-       basher         -"

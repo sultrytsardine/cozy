@@ -22,12 +22,13 @@ fi
 #
 #   Execute other files
 #
-source 'exports.sh'
-source 'history.sh'     # history file settings
-source 'git.sh'         # git-related function definitions
-source 'prompt.sh'      # customizes command prompt & prompt_command
-source 'traps.sh'       # defines precmd_funcs - executed before some commands
-source 'functions.sh'   # custom aliases, too big to be just aliases
+export BASHER_HOME="$HOME/.basher"
+source "$BASHER_HOME/exports.sh"
+source "$BASHER_HOME/history.sh"     # history file settings
+source "$BASHER_HOME/git.sh"         # git-related function definitions
+source "$BASHER_HOME/prompt.sh"      # customizes command prompt & prompt_command
+source "$BASHER_HOME/traps.sh"       # defines precmd_funcs - executed before some commands
+source "$BASHER_HOME/functions.sh"   # custom aliases, too big to be just aliases
 
 
 #
@@ -49,5 +50,4 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 #
 # check window size after each command
 shopt -s checkwinsize
-
 

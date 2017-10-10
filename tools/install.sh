@@ -13,9 +13,10 @@ else
     fi
     sudo apt install vim -q -y
     git clone https://github.com/wtty-fool/basher "$HOME/.basher"
+    mkdir --mode=0755 $HOME/.basher
+    chmod 0755 $HOME/.basher
 
-
-    echo "Backing up .bashrc and vim and gitconfig..."
+    echo; echo; echo "Backing up .bashrc and vim and gitconfig..."
     if [ -f $HOME/.bashrc ]; then
         mv $HOME/.bashrc $HOME/.bashrc.backup
     fi
@@ -30,21 +31,25 @@ else
     fi
 
 
-    echo "Linking basher's scripts..."
+    echo; echo; echo "Linking basher's scripts..."
     ln -s $HOME/.basher/bashrc $HOME/.bashrc
     ln -s $HOME/.basher/vimrc $HOME/.vimrc
     ln -s $HOME/.basher/gitconfig $HOME/.gitconfig
-    mkdir $HOME/.vim
+    chmod 0755 $HOME/.bashrc
+    chmod 0755 $HOME/.vimrc
+    chmod 0755 $HOME/.gitconfig
+    mkdir --mode=0755 $HOME/.vim
 
 
-    echo "Installing vim plugins..."
+    echo; echo; echo "Installing vim plugins..."
+    git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
     vim +PluginInstall +qall
     echo "Recompiling YouCompleteMe's libraries..."
     sudo apt install cmake build-essential -q -y || (echo "Failed to install cmake!"; exit 64)
     python $HOME/.vim/bundle/YouCompleteMe/install.py &> /dev/null
 
 
-    echo "Setting up Python's virtual environments..."
+    echo; echo; echo "Setting up Python's virtual environments..."
     sudo apt install python python3 python-pip python3-pip -y -q || (echo "Failed to install Python!"; exit 64)
     sudo -H pip3 install --user --ignore-installed virtualenv virtualenvwrapper
     py3_location=`which python3`
@@ -55,6 +60,7 @@ else
     sudo -H mkdir --mode=0755 $HOME/.virtualenvs
 
 
+    echo; echo; 
     until [[ $scheme -eq 1 ]] || [[ $scheme -eq 2 ]]; do
         echo "Pick a color scheme"
         echo "1) Gruvbox Dark (medium contrast)"
@@ -81,13 +87,12 @@ else
     unset scheme
 
 
-    echo; echo; echo "\033[0;34m";  # blue
+    echo; echo; echo;
     echo "------------------------"
     echo "-                      -"
     echo "-       basher         -"
     echo "-                      -"
     echo "------------------------"
-    echo "\033[0m"
     echo
     echo basher has been succesfully installed!
     echo Enjoy!

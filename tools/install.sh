@@ -51,7 +51,7 @@ else
 
     echo; echo; echo "Setting up Python's virtual environments..."
     sudo apt install python python3 python-pip python3-pip -y -q || (echo "Failed to install Python!"; exit 64)
-    sudo -H pip3 install --user --ignore-installed virtualenv virtualenvwrapper
+    pip3 install --user --ignore-installed virtualenv virtualenvwrapper
     py3_location=`which python3`
     echo "export VIRTUALENVWRAPPER_PYTHON=$py3_location" >> $HOME/.basher/exports.sh
     unset py3_location
@@ -87,7 +87,7 @@ else
     unset scheme
 
 
-    echo; echo; echo;
+    echo; echo; echo;  # blue
     echo "------------------------"
     echo "-                      -"
     echo "-       basher         -"

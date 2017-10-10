@@ -12,8 +12,10 @@ case $- in
       *) return;;
 esac
 
-if [[ $(source linux.sh is_elementary) == "False" ]]; then
+export BASHER_HOME="$HOME/.basher"
+if [[ $(source $BASHER_HOME/linux.sh is_elementary) == "False" ]]; then
     echo "I only support ElementaryOS!"
+    unset $BASHER_HOME
     source $HOME/.bashrc
     return
 fi
@@ -22,7 +24,6 @@ fi
 #
 #   Execute other files
 #
-export BASHER_HOME="$HOME/.basher"
 source "$BASHER_HOME/exports.sh"
 source "$BASHER_HOME/history.sh"     # history file settings
 source "$BASHER_HOME/git.sh"         # git-related function definitions

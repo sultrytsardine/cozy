@@ -1,19 +1,19 @@
 #!/bin/bash
 
-if [[ -d $HOME/.basher && ${#BASHER_HOME} -gt 0 ]]; then
-    echo "Found basher at $BASHER_HOME"
+if [[ -d $HOME/.cozy && ${#COZY_HOME} -gt 0 ]]; then
+    echo "Found cozy at $COZY_HOME"
 
     echo "Removing links..."
-    if [ $(readlink $HOME/.bashrc) == $BASHER_HOME/bashrc ]; then
-        rm $HOME/.bashrc
+    if [ $(readlink $HOME/.bashrc) == $COZY_HOME/bashrc ]; then
+        sudo rm $HOME/.bashrc
     fi
-    if [ $(readlink $HOME/.vimrc) == $BASHER_HOME/vimrc ]; then
-        rm $HOME/.vimrc
+    if [ $(readlink $HOME/.vimrc) == $COZY_HOME/vimrc ]; then
+        sudo rm $HOME/.vimrc
     fi
-    if [ $(readlink $HOME/.gitconfig) == $BASHER_HOME/gitconfig ]; then
-        rm $HOME/.gitconfig
+    if [ $(readlink $HOME/.gitconfig) == $COZY_HOME/gitconfig ]; then
+        sudo rm $HOME/.gitconfig
     fi
-    rm -rf $HOME/.vim
+    sudo rm -rf $HOME/.vim
 
     echo "Restoring backups"
     if [ -f $HOME/.bashrc.backup ]; then
@@ -29,6 +29,14 @@ if [[ -d $HOME/.basher && ${#BASHER_HOME} -gt 0 ]]; then
         mv $HOME/.gitconfig.backup $HOME/.gitconfig
     fi
 
+
+    echo "Removing virtualenvs..."
+    if [ -d $HOME/.virtualenvs ]; then
+        rm -rf $HOME/.virtualenvs
+        unset $WORKON_HOME
+    fi
+
+
     echo "Restoring color scheme..."
     default_palette='#303030:#e1321a:#6ab017:#ffc005:#004f9e:#ec0048:#2aa7e7:#f2f2f2:#5d5d5d:#ff361e:#7bc91f:#ffd00a:#0071ff:#ff1d62:#4bb8fd:#a020f0'
     gsettings set org.pantheon.terminal.settings background 'rgba(10, 10, 10, .95)'
@@ -38,11 +46,11 @@ if [[ -d $HOME/.basher && ${#BASHER_HOME} -gt 0 ]]; then
     unset default_palette
 
     echo; echo; echo;
-    echo "basher has been succesfully uininstalled!"
+    echo "cozy has been succesfully uininstalled!"
     echo "Goodbye ;_;"
     source $HOME/.bashrc
 else
-    echo "basher has not been found, cannot uninstall"
-    echo "Make sure that BASHER_HOME variable is set and it points to basher's location"
+    echo "cozy has not been found, cannot uninstall"
+    echo "Make sure that COZY_HOME variable is set and it points to cozy's location"
     return
 fi

@@ -69,7 +69,7 @@ let g:gruvbox_italic = 1
 let g:gruvbox_bold = 1
 let g:gruvbox_contrast_dark = 'medium'
 set bg=dark
-colorscheme gruvbox
+silent! colorscheme gruvbox     " silent for the install run, when it's unavailable
 "
 " NERDTree
 map <F7> :NERDTreeToggle<CR>
